@@ -21,6 +21,7 @@ build: dirs game
 dirs:
 	@ mkdir -p $(BIN)
 	@ mkdir -p $(BIN)/engine
+	@ mkdir -p $(BIN)/engine/renderer
 
 run:
 	@ $(BIN)/game
