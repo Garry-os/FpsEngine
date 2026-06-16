@@ -18,10 +18,10 @@ VertexBuffer::~VertexBuffer() {
     glDeleteBuffers(GL_ARRAY_BUFFER, &m_id);
 }
 
-void VertexBuffer::Bind() const {
+void VertexBuffer::bind() const {
     glBindBuffer(GL_ARRAY_BUFFER, m_id);
 }
 
-void VertexBuffer::Unbind() const {
+void VertexBuffer::unbind() const {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
