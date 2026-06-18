@@ -3,11 +3,12 @@
 
 // Similar to vertex buffer lol
 
-IndexBuffer::IndexBuffer(const void* data, uint32_t size) {
+IndexBuffer::IndexBuffer(const uint32_t* data, uint32_t count) {
     glGenBuffers(1, &m_id);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
 
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), data, GL_STATIC_DRAW);
+    m_count = count;
 }
 
 IndexBuffer::~IndexBuffer() {

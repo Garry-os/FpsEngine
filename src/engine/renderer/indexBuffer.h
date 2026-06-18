@@ -3,11 +3,15 @@
 
 class IndexBuffer {
 public:
-    IndexBuffer(const void* data, uint32_t size);
+    IndexBuffer(const uint32_t* data, uint32_t count);
     ~IndexBuffer();
 
     void bind() const;
     void unbind() const;
+
+    inline uint32_t getCount() const { return m_count; }
+
 private:
     uint32_t m_id;
+    uint32_t m_count;
 };
