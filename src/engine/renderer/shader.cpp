@@ -115,5 +115,13 @@ std::optional<uint32_t> Shader::createProgram(const std::string& vertexSrc, cons
     return program;
 }
 
+void Shader::bind() const {
+    glUseProgram(m_id);
+}
+
+void Shader::unbind() const {
+    glUseProgram(m_id);
+}
+
 
 

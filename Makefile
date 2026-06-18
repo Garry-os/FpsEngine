@@ -1,8 +1,8 @@
 CXX = clang++
-CXXFLAGS = -Wall -Wextra -O2 -std=c++23
+CXXFLAGS = -Wall -Wextra -O2 -std=c++23 -MMD -MP
 
 CC = clang
-CFLAGS = -Wall -Wextra -O2 -std=c23
+CFLAGS = -Wall -Wextra -O2 -std=c23 -MMD -MP
 
 ## Includes
 CXXFLAGS += -I libs/glad/include -I src
@@ -37,3 +37,6 @@ $(BIN)/%.o: src/%.cpp
 
 clean:
 	rm -rf $(BIN)
+
+-include $(OBJ:.o=.d)
+
