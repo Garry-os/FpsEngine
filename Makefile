@@ -5,7 +5,7 @@ CC = clang
 CFLAGS = -Wall -Wextra -O2 -std=c23
 
 ## Includes
-CXXFLAGS += -I libs/glad/include
+CXXFLAGS += -I libs/glad/include -I src
 
 LINKLIBS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 
