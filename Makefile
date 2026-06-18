@@ -1,5 +1,5 @@
 CXX = clang++
-CXXFLAGS = -Wall -Wextra -O2 -std=c++23 -MMD -MP
+CXXFLAGS = -Wall -Wextra -O2 -g -std=c++23 -MMD -MP
 
 CC = clang
 CFLAGS = -Wall -Wextra -O2 -std=c23 -MMD -MP
