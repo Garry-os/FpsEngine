@@ -15,6 +15,13 @@
 // Similar to .unwrap() in rust
 #define TRY_ASSERT(name, expr, msg)     \
     auto _tmp_##name = (expr);          \
-    assert(_tmp_##name && msg);        \
+    assert(_tmp_##name && msg);         \
     auto name = std::move(*_tmp_##name)
 
+// Check optional type
+// unwrap or return false
+#define TRY_RETURN_FALSE(name, expr)    \
+    auto _tmp_##name = (expr);          \
+    if (!_tmp_##name)                   \
+        return false;                   \
+    auto name = std::move(*_tmp_##name)

@@ -1,4 +1,5 @@
 #include "engine/engine.h"
+#include <cmath>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "engine/renderer/shader.h"
@@ -40,6 +41,8 @@ int main() {
         window.clear(0.f, 0.f, 0.f, 1.f);
 
         shader.bind();
+        shader.setUniform4f("u_color", std::sin(glfwGetTime() * 5.0f), 0.5f, std::sin(glfwGetTime() * 2.0f), 1.0f);
+
         quad.draw();
 
         window.swapBuffers();

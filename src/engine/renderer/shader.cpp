@@ -123,5 +123,48 @@ void Shader::unbind() const {
     glUseProgram(m_id);
 }
 
+// Uniform functions
+std::optional<int> Shader::findUniformLocation(const std::string& name) {
+    // Check the cache
+    if (m_locationCache.find(name) != m_locationCache.end()) {
+        return m_locationCache[name];
+    }
+
+    int location = glGetUniformLocation(m_id, name.c_str());
+    if (location < 0) {
+        std::cerr << "Uniform " << name << "doesn't exist" << std::endl;
+        return std::nullopt;
+    }
+
+    // Save it in the cache
+    m_locationCache[name] = location;
+    return location;
+}
+
+// Floats
+bool Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {
+    TRY_RETURN_FALSE(uniform, findUniformLocation(name));
+    glUniform4f(uniform, v0, v1, v2, v3);
+    return true;
+}
+
+
+bool Shader::setUniform3f(const std::string& name, float v0, float v1, float v2) {
+    TRY_RETURN_FALSE(uniform, findUniformLocation(name));
+    glUniform3f(uniform, v0, v1, v2);
+    return true;
+}
+
+bool Shader::setUniform2f(const std::string& name, float v0, float v1) {
+    TRY_RETURN_FALSE(uniform, findUniformLocation(name));
+    glUniform2f(uniform, v0, v1);
+    return true;
+}
+
+bool Shader::setUniform1f(const std::string& name, float v0) {
+    TRY_RETURN_FALSE(uniform, findUniformLocation(name));
+    glUniform1f(uniform, v0);
+    return true;
+}
 
 
