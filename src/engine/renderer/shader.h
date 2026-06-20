@@ -3,6 +3,7 @@
 #include <string>
 #include <optional>
 #include <unordered_map>
+#include <glm/glm.hpp>
 
 class Shader {
 public:
@@ -18,6 +19,9 @@ public:
     bool setUniform3f(const std::string& name, float v0, float v1, float v2);
     bool setUniform2f(const std::string& name, float v0, float v1);
     bool setUniform1f(const std::string& name, float v0);
+
+    // Matrices
+    bool setUniformMat4f(const std::string& name, const glm::mat4& matrix);
 
 private:
     std::optional<uint32_t> createProgram(const std::string& vertexSrc, const std::string& fragmentSrc);

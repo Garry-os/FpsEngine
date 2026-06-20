@@ -4,6 +4,7 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <util.h>
+#include <glm/gtc/type_ptr.hpp>
 
 static std::optional<std::string> readFile(const std::string& filePath) {
     std::ifstream file(filePath);
@@ -164,6 +165,13 @@ bool Shader::setUniform2f(const std::string& name, float v0, float v1) {
 bool Shader::setUniform1f(const std::string& name, float v0) {
     TRY_RETURN_FALSE(uniform, findUniformLocation(name));
     glUniform1f(uniform, v0);
+    return true;
+}
+
+// Matrices
+bool Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix) {
+    TRY_RETURN_FALSE(uniform, findUniformLocation(name));
+    glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(matrix));
     return true;
 }
 
