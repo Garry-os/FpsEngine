@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "engine/renderer/shader.h"
 #include "engine/renderer/mesh.h"
+#include "engine/renderer/camera.h"
 
 int main() {
     // Create and initialize engine
@@ -34,6 +35,8 @@ int main() {
 
     Shader shader("shaders/vert.glsl", "shaders/frag.glsl");
 
+    Camera camera(glm::vec3(0.f, 0.f, 1.5f), 45.f, window.getWidth(), window.getHeight(), 0.1f, 100.f);
+
     // Game loop
     while (!engine->windowShouldClose()) {
         engine->handleInputs();
@@ -42,6 +45,7 @@ int main() {
 
         shader.bind();
         shader.setUniform4f("u_color", std::sin(glfwGetTime() * 5.0f), 0.5f, std::sin(glfwGetTime() * 2.0f), 1.0f);
+        shader.setUniformMat4f("u_mvp", camera.getCameraMatrix());
 
         quad.draw();
 

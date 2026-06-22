@@ -24,6 +24,9 @@ bool Window::createWindow(int p_width, int p_height, const std::string& title) {
     this->width = p_width;
     this->height = p_height;
 
+    // Store window instance
+    glfwSetWindowUserPointer(window, this);
+
     // Make GLFW context
     glfwMakeContextCurrent(window);
     // Set resize callback
@@ -32,8 +35,15 @@ bool Window::createWindow(int p_width, int p_height, const std::string& title) {
     return true;
 }
 
-void Window::fb_resize_callback(GLFWwindow*, int p_width, int p_height) {
+void Window::fb_resize_callback(GLFWwindow* window, int p_width, int p_height) {
     glViewport(0, 0, p_width, p_height);
+    
+    // Update window's width & height
+    Window* handler = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    if (handler) {
+        handler->width = p_width;
+        handler->height = p_height;
+    }
 }
 
 bool Window::shouldClose() const {

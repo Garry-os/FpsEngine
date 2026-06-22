@@ -15,8 +15,11 @@ public:
     void clear(float r, float g, float b, float a);
     void swapBuffers();
 
+    inline int getWidth() const { return width; }
+    inline int getHeight() const { return height; }
+
 private:
-    static void fb_resize_callback(GLFWwindow*, int p_width, int p_height);
+    static void fb_resize_callback(GLFWwindow* window, int p_width, int p_height);
 
     GLFWwindow* window;
     int width, height;
