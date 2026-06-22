@@ -1,12 +1,12 @@
 #pragma once
 #include <glm/glm.hpp>
 
-// Default camera values
-const float YAW         = -90.0f;
-const float PITCH       =  0.0f;
-const float SPEED       =  2.5f;
-const float SENSITIVITY =  0.1f;
-const float ZOOM        =  45.0f;
+enum class CameraDirection {
+    Forward,
+    Backward,
+    Left,
+    Right
+};
 
 class Camera {
 public:
@@ -16,6 +16,18 @@ public:
     void setPosition(glm::vec3 newPos);
 
     glm::mat4 getCameraMatrix() const;
+
+    void processKeyboard(float dt, CameraDirection dir);
+    void processMouse(float xOffset, float yOffset);
+
+    float cameraSpeed = 2.5f;
+    float mouseSens = 0.02f;
+
+    float yaw         = -90.0f;
+    float pitch       =  0.0f;
+    float speed       =  2.5f;
+    float sensitivity =  0.1f;
+    float zoom        =  45.0f;
 
 private:
     glm::vec3 m_cameraPos;
@@ -29,5 +41,6 @@ private:
     glm::vec3 m_worldUp;
     
     void updateCameraVectors();
+    void updateMatrix();
 };
 

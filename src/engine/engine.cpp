@@ -45,6 +45,9 @@ bool Engine::initialize() {
         return false;
     }
 
+    // Vsync
+    glfwSwapInterval(1);
+
     return true;
 }
 
