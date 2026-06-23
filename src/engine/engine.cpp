@@ -19,12 +19,10 @@ static float lastMouseY = 0.f;
 
 Engine::Engine() {
     deltaTime = 0.f;
-    window = new Window();
+    window = std::make_unique<Window>();
 }
 
 Engine::~Engine() {
-    delete window;
-
     glfwTerminate();
 }
 

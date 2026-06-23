@@ -22,7 +22,7 @@ public:
     inline Camera& getCamera() const { return *camera; }
 
 private:
-    Window* window;
+    std::unique_ptr<Window> window;
     std::unique_ptr<Mesh> quad;
     std::unique_ptr<Shader> shader;
     std::unique_ptr<Camera> camera;
