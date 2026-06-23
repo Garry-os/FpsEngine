@@ -14,6 +14,7 @@ public:
     ~Camera() = default;
 
     void setPosition(glm::vec3 newPos);
+    void updateWindow(float fov, float newWidth, float newHeight, float nearPlane, float farPlane);
 
     glm::mat4 getCameraMatrix() const;
 

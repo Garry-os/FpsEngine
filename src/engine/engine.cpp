@@ -54,7 +54,7 @@ bool Engine::initialize() {
 #endif
 
     // Create the window instance
-    if (!window->createWindow(w_width, w_height, "FPS shooter", this)) {
+    if (!window->createWindow(true, w_width, w_height, "FPS shooter", this)) {
         std::cerr << "Failed to create window" << std::endl;
         return false;
     }

@@ -69,3 +69,7 @@ void Camera::updateMatrix() {
     m_view = glm::lookAt(m_cameraPos, m_cameraPos + m_front, m_up);
 }
 
+void Camera::updateWindow(float fov, float newWidth, float newHeight, float nearPlane, float farPlane) {
+    m_projection = glm::perspective(glm::radians(fov), (float)newWidth / (float)newHeight, nearPlane, farPlane);
+}
+

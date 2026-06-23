@@ -10,7 +10,7 @@ public:
     Window();
     ~Window();
 
-    bool createWindow(int p_width, int p_height, const std::string& title, Engine* engineInstance);
+    bool createWindow(bool fullScreen, int p_width, int p_height, const std::string& title, Engine* engineInstance);
     inline GLFWwindow* getNativeWindow() const { return window; }
     bool shouldClose() const;
 
