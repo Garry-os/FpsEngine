@@ -1,6 +1,7 @@
 #include "window.h"
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
+#include "engine.h"
 
 Window::Window()
     :window(nullptr), width(0), height(0) {}
@@ -14,7 +15,7 @@ Window::~Window() {
  * Create a window.
  * Returns false if failed, true if succeed.
  */
-bool Window::createWindow(int p_width, int p_height, const std::string& title) {
+bool Window::createWindow(int p_width, int p_height, const std::string& title, Engine* enginePtr) {
     // Create a GLFWwindow
     window = glfwCreateWindow(p_width, p_height, title.c_str(), nullptr, nullptr);
     if (!window) {
@@ -25,7 +26,7 @@ bool Window::createWindow(int p_width, int p_height, const std::string& title) {
     this->height = p_height;
 
     // Store window instance
-    glfwSetWindowUserPointer(window, this);
+    glfwSetWindowUserPointer(window, enginePtr);
 
     // Make GLFW context
     glfwMakeContextCurrent(window);
@@ -39,10 +40,10 @@ void Window::fb_resize_callback(GLFWwindow* window, int p_width, int p_height) {
     glViewport(0, 0, p_width, p_height);
     
     // Update window's width & height
-    Window* handler = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    Engine* handler = static_cast<Engine*>(glfwGetWindowUserPointer(window));
     if (handler) {
-        handler->width = p_width;
-        handler->height = p_height;
+        handler->getWindowNative().width = p_width;
+        handler->getWindowNative().height = p_height;
     }
 }
 

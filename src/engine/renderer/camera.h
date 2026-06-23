@@ -21,13 +21,11 @@ public:
     void processMouse(float xOffset, float yOffset);
 
     float cameraSpeed = 2.5f;
-    float mouseSens = 0.02f;
+    float mouseSens = 0.05f;
 
     float yaw         = -90.0f;
     float pitch       =  0.0f;
     float speed       =  2.5f;
-    float sensitivity =  0.1f;
-    float zoom        =  45.0f;
 
 private:
     glm::vec3 m_cameraPos;

@@ -1,61 +1,21 @@
 #include "engine/engine.h"
-#include <cmath>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "engine/renderer/shader.h"
-#include "engine/renderer/mesh.h"
-#include "engine/renderer/camera.h"
+#include <memory>
 
 int main() {
     // Create and initialize engine
-    Engine* engine = new Engine();
+    auto engine = std::make_unique<Engine>();
     if (!engine->initialize()) {
-        delete engine;
         return -1;
     }
-
-    Window& window = engine->getWindowNative();
-
-    float vertices[] = {
-         0.5f,  0.5f, 0.0f,  // top right
-         0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left 
-    };
-    uint32_t indices[] = {  // note that we start from 0!
-        0, 1, 3,   // first triangle
-        1, 2, 3    // second triangle
-    };
-
-
-    VertexBufferLayout layout = VertexBufferLayout();
-    layout.addElement(DataType::Float, 3, false);
-
-    Mesh quad = Mesh(vertices, sizeof(vertices), indices, sizeof(indices) / sizeof(uint32_t), layout);
-
-    Shader shader("shaders/vert.glsl", "shaders/frag.glsl");
-
-    Camera camera(glm::vec3(0.f, 0.f, 1.5f), 45.f, window.getWidth(), window.getHeight(), 0.1f, 100.f);
 
     // Game loop
     while (!engine->windowShouldClose()) {
         engine->handleInputs();
  
-        window.clear(0.f, 0.f, 0.f, 1.f);
-
-        shader.bind();
-        shader.setUniform4f("u_color", std::sin(glfwGetTime() * 5.0f), 0.5f, std::sin(glfwGetTime() * 2.0f), 1.0f);
-        shader.setUniformMat4f("u_mvp", camera.getCameraMatrix());
-
-        quad.draw();
-
-        window.swapBuffers();
-        glfwPollEvents();
-
-        // engine->update();
+        engine->update();
     }
-
-    delete engine;
 
     return 0;
 }

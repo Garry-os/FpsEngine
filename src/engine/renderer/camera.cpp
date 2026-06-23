@@ -34,10 +34,10 @@ void Camera::updateCameraVectors() {
 void Camera::processKeyboard(float dt, CameraDirection dir) {
     float velocity = dt * cameraSpeed;
     switch (dir) {
-        case CameraDirection::Forward: m_cameraPos += m_front * velocity;  
-        case CameraDirection::Backward: m_cameraPos -= m_front * velocity;
-        case CameraDirection::Left: m_cameraPos -= m_right * velocity;
-        case CameraDirection::Right: m_cameraPos += m_right * velocity;
+        case CameraDirection::Forward: m_cameraPos += m_front * velocity; break;
+        case CameraDirection::Backward: m_cameraPos -= m_front * velocity; break;
+        case CameraDirection::Left: m_cameraPos -= m_right * velocity; break;
+        case CameraDirection::Right: m_cameraPos += m_right * velocity; break;
     };
     updateMatrix();
 }
@@ -48,10 +48,10 @@ void Camera::processMouse(float xOffset, float yOffset) {
     yOffset *= mouseSens;
 
     yaw += xOffset;
-    pitch += yOffset;
+    pitch -= yOffset;
 
     // Constrain pitch
-    pitch = glm::clamp(pitch, -90.f, 90.f); // -90 to 90 degree
+    pitch = glm::clamp(pitch, -89.f, 89.f); // -90 to 90 degree
     updateCameraVectors();
     updateMatrix();
 }
