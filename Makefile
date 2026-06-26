@@ -22,6 +22,7 @@ dirs:
 	@ mkdir -p $(BIN)
 	@ mkdir -p $(BIN)/engine
 	@ mkdir -p $(BIN)/engine/renderer
+	@ mkdir -p $(BIN)/engine/resources
 
 run:
 	@ $(BIN)/game
@@ -39,4 +40,3 @@ clean:
 	rm -rf $(BIN)
 
 -include $(OBJ:.o=.d)
-

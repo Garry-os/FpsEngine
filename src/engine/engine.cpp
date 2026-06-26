@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "renderer/vertexBufferLayout.h"
-#include "renderer/mesh.h"
 #include "renderer/shader.h"
 #include "renderer/camera.h"
 
@@ -30,7 +29,7 @@ float vertices[] = {
      0.5f,  0.5f, 0.0f,  // top right
      0.5f, -0.5f, 0.0f,  // bottom right
     -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f   // top left 
+    -0.5f,  0.5f, 0.0f   // top left
 };
 uint32_t indices[] = {  // note that we start from 0!
     0, 1, 3,            // first triangle
@@ -70,10 +69,21 @@ bool Engine::initialize() {
     // Vsync
     glfwSwapInterval(1);
 
+    // Initialize engine's internals
+    rsManager = std::make_unique<ResourceMananager>();
+
     // Construct the mesh
     VertexBufferLayout layout = VertexBufferLayout();
     layout.addElement(DataType::Float, 3, false);
-    quad = std::make_unique<Mesh>(vertices, sizeof(vertices), indices, sizeof(indices) / sizeof(uint32_t), layout);
+
+    MeshInfo meshInfo;
+    meshInfo.vertices = vertices;
+    meshInfo.vertexSizeInBytes = sizeof(vertices);
+    meshInfo.indices = indices;
+    meshInfo.indexCount = sizeof(indices);
+    meshInfo.layout = layout;
+
+    meshHandle = rsManager->createMesh(meshInfo);
 
     shader = std::make_unique<Shader>("shaders/vert.glsl", "shaders/frag.glsl");
     camera = std::make_unique<Camera>(glm::vec3(0.f, 0.f, 1.5f), 45.f, window->getWidth(), window->getHeight(), 0.1f, 100.f);
@@ -112,7 +122,7 @@ void Engine::update() {
     shader->bind();
     shader->setUniform4f("u_color", std::sin(glfwGetTime() * 5.0f), 0.5f, std::sin(glfwGetTime() * 2.0f), 1.0f);
     shader->setUniformMat4f("u_mvp", camera->getCameraMatrix());
-    quad->draw();
+    rsManager->getMesh(meshHandle).draw();
 
     // Swap buffers
     window->swapBuffers();
@@ -124,7 +134,7 @@ void Engine::mouseCallback(GLFWwindow* window, double xPos, double yPos) {
     // Calculate the offset
     float x = static_cast<float>(xPos);
     float y = static_cast<float>(yPos);
-    
+
     if (firstMouse) {
         lastMouseX = x;
         lastMouseY = y;
@@ -143,4 +153,3 @@ void Engine::mouseCallback(GLFWwindow* window, double xPos, double yPos) {
         handler->getCamera().processMouse(xOffset, yOffset);
     }
 }
-
