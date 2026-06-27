@@ -26,11 +26,11 @@ private:
     // Application's window
     std::unique_ptr<Window> window;
 
-    std::unique_ptr<Shader> shader;
     MeshHandle meshHandle;
+    ShaderHandle shaderHandle;
 
     // Resource manager
-    std::unique_ptr<ResourceMananager> rsManager;
+    std::unique_ptr<ResourceManager> rsManager;
 
     // Game's camera
     std::unique_ptr<Camera> camera;

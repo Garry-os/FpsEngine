@@ -70,7 +70,7 @@ bool Engine::initialize() {
     glfwSwapInterval(1);
 
     // Initialize engine's internals
-    rsManager = std::make_unique<ResourceMananager>();
+    rsManager = std::make_unique<ResourceManager>();
 
     // Construct the mesh
     VertexBufferLayout layout = VertexBufferLayout();
@@ -84,8 +84,8 @@ bool Engine::initialize() {
     meshInfo.layout = layout;
 
     meshHandle = rsManager->createMesh(meshInfo);
+    shaderHandle = rsManager->loadShader("shaders/vert.glsl", "shaders/frag.glsl");
 
-    shader = std::make_unique<Shader>("shaders/vert.glsl", "shaders/frag.glsl");
     camera = std::make_unique<Camera>(glm::vec3(0.f, 0.f, 1.5f), 45.f, window->getWidth(), window->getHeight(), 0.1f, 100.f);
 
     return true;
@@ -119,9 +119,10 @@ void Engine::update() {
     // Clear screen
     window->clear(0.f, 0.f, 0.f, 1.f);
 
-    shader->bind();
-    shader->setUniform4f("u_color", std::sin(glfwGetTime() * 5.0f), 0.5f, std::sin(glfwGetTime() * 2.0f), 1.0f);
-    shader->setUniformMat4f("u_mvp", camera->getCameraMatrix());
+    Shader& shader = rsManager->getShader(shaderHandle);
+    shader.bind();
+    shader.setUniform4f("u_color", std::sin(glfwGetTime() * 5.0f), 0.5f, std::sin(glfwGetTime() * 2.0f), 1.0f);
+    shader.setUniformMat4f("u_mvp", camera->getCameraMatrix());
     rsManager->getMesh(meshHandle).draw();
 
     // Swap buffers

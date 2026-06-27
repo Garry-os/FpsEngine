@@ -4,11 +4,17 @@
 #include <memory>
 #include <engine/renderer/vertexBufferLayout.h>
 #include <engine/renderer/mesh.h>
+#include <engine/renderer/shader.h>
 
 // Slot types
 struct MeshSlot {
     std::unique_ptr<Mesh> mesh;
-    uint32_t generation;
+    uint8_t generation;
+};
+
+struct ShaderSlot {
+    std::unique_ptr<Shader> shader;
+    uint8_t generation;
 };
 
 // Info structs
@@ -22,15 +28,20 @@ struct MeshInfo {
 
 // Handle types
 typedef uint32_t MeshHandle;
+typedef uint32_t ShaderHandle;
 
-class ResourceMananager {
+class ResourceManager {
 public:
-    ResourceMananager() = default;
-    ~ResourceMananager() = default;
+    ResourceManager() = default;
+    ~ResourceManager() = default;
 
     MeshHandle createMesh(const MeshInfo& info);
     Mesh& getMesh(MeshHandle handle);
 
+    ShaderHandle loadShader(const std::string& vertexPath, const std::string& fragmentPath);
+    Shader& getShader(ShaderHandle handle);
+
 private:
     std::vector<MeshSlot> meshes;
+    std::vector<ShaderSlot> shaders;
 };

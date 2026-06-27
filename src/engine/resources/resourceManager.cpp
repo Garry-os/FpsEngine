@@ -4,7 +4,7 @@
 
 // ID: (generation << 24) | index
 
-MeshHandle ResourceMananager::createMesh(const MeshInfo& info) {
+MeshHandle ResourceManager::createMesh(const MeshInfo& info) {
     uint8_t generation = 0;
     uint32_t index = meshes.size();
 
@@ -19,7 +19,7 @@ MeshHandle ResourceMananager::createMesh(const MeshInfo& info) {
     return handle;
 }
 
-Mesh& ResourceMananager::getMesh(MeshHandle handle) {
+Mesh& ResourceManager::getMesh(MeshHandle handle) {
     // Decode
     uint8_t generation = ((handle >> 24) & 0xFF);
     uint32_t index = (handle & 0x00FFFFFF);
@@ -34,4 +34,36 @@ Mesh& ResourceMananager::getMesh(MeshHandle handle) {
     }
 
     return *meshes[index].mesh;
+}
+
+ShaderHandle ResourceManager::loadShader(const std::string& vertexPath, const std::string& fragmentPath) {
+    uint8_t generation = 0;
+    uint32_t index = shaders.size();
+
+    // Create a shader slot
+    ShaderSlot slot;
+    slot.generation = generation;
+    slot.shader = std::make_unique<Shader>(vertexPath, fragmentPath);
+    shaders.push_back(std::move(slot));
+
+    // Construct a handle
+    ShaderHandle handle = (generation << 24) | (index & 0x00FFFFFF);
+    return handle;
+}
+
+Shader& ResourceManager::getShader(MeshHandle handle) {
+    // Decode
+    uint8_t generation = (handle >> 24) & 0xFF;
+    uint32_t index = (handle & 0x00FFFFFF);
+
+    // Check if it's valid
+    if (shaders[index].shader == nullptr) {
+        assert(false && "Invalid shader index");
+    }
+
+    if (shaders[index].generation != generation) {
+        assert(false && "Outdated shader generation");
+    }
+
+    return *shaders[index].shader;
 }
