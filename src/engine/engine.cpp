@@ -5,6 +5,7 @@
 #include "renderer/vertexBufferLayout.h"
 #include "renderer/shader.h"
 #include "renderer/camera.h"
+#include "scene/transform.h"
 
 // 1280x720 resolution
 constexpr int w_width = 1280;
@@ -34,6 +35,13 @@ float vertices[] = {
 uint32_t indices[] = {  // note that we start from 0!
     0, 1, 3,            // first triangle
     1, 2, 3             // second triangle
+};
+
+Transform transforms[] = {
+    {0.0f, 0.0f, 0.0f, 1.0f},
+    {0.0f, 2.0f, 2.0f, 2.0f},
+    {5.0f, 3.0f, 1.0f, 1.0f},
+    {1.0f, 2.0f, 7.0f, 1.0f},
 };
 
 bool Engine::initialize() {
@@ -119,11 +127,14 @@ void Engine::update() {
     // Clear screen
     window->clear(0.f, 0.f, 0.f, 1.f);
 
-    Shader& shader = rsManager->getShader(shaderHandle);
-    shader.bind();
-    shader.setUniform4f("u_color", std::sin(glfwGetTime() * 5.0f), 0.5f, std::sin(glfwGetTime() * 2.0f), 1.0f);
-    shader.setUniformMat4f("u_mvp", camera->getCameraMatrix());
-    rsManager->getMesh(meshHandle).draw();
+    for (int i = 0; i < 4; i++)
+    {
+        Shader& shader = rsManager->getShader(shaderHandle);
+        shader.bind();
+        shader.setUniform4f("u_color", std::sin(glfwGetTime() * 5.0f), 0.5f, std::sin(glfwGetTime() * 2.0f), 1.0f);
+        shader.setUniformMat4f("u_mvp", camera->getCameraMatrix() * transforms[i].getModelMatrix());
+        rsManager->getMesh(meshHandle).draw();
+    }
 
     // Swap buffers
     window->swapBuffers();
